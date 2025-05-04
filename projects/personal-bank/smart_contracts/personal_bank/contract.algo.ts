@@ -9,10 +9,12 @@ import {
   itxn,
   Txn,
   uint64,
+  Box,
 } from '@algorandfoundation/algorand-typescript'
 
 export class PersonalBank extends Contract {
   public depositors = BoxMap<Account, uint64>({ keyPrefix: 'depositors' })
+  public github = Box<string>({ key: 'github' })
 
   /**
    * Deposits funds into the personal bank.
@@ -34,6 +36,9 @@ export class PersonalBank extends Contract {
     } else {
       this.depositors(payTxn.sender).value = depositAmount
     }
+
+    // Store GitHub username in a box named "github"
+    this.github.value = 'WumiDev'
 
     return this.depositors(payTxn.sender).value
   }
